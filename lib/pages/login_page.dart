@@ -1,55 +1,59 @@
 import 'package:flutter/material.dart';
-import '../components/custom_button.dart';
-import '../components/custom_textfield.dart';
-import '../components/title_text.dart';
-import '../controllers/login_controller.dart';
+import 'package:get/get.dart';
+import 'package:ulangan_flutter/components/custom_button.dart';
+import 'package:ulangan_flutter/components/custom_textfield.dart';
+import 'package:ulangan_flutter/components/title_text.dart';
+import 'package:ulangan_flutter/controllers/login_controller.dart';
+import 'package:ulangan_flutter/pages/main_menu_page.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  final LoginController controller = LoginController();
-
-  void _login() {
-    controller.login(
-      () => setState(() {}),
-      () => setState(() {}),
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final LoginController auth = Get.find();
+
+    void _login() {
+      final ok = auth.login();
+      if (ok) {
+        Get.offAll(() => MainMenuPage());
+      } else {
+        Get.snackbar(
+          'Gagal',
+          'Username atau password salah',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+    }
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Halaman Login")),
+      appBar: AppBar(title: const Text('Halaman Login')),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Container(
-            margin: const EdgeInsets.all(10),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const TitleText(text: "Selamat Datang"),
+                const TitleText(text: 'Selamat Datang'),
                 const SizedBox(height: 10),
-                const Text("Silakan masukkan username dan password anda"),
+                const Text('Silakan masukkan username dan password anda'),
 
                 CustomInputField(
-                  label: "Username",
-                  controller: controller.txtUsername,
+                  label: 'Username',
+                  controller: auth.txtUsername,
                 ),
                 CustomInputField(
-                  label: "Password",
-                  controller: controller.txtPassword,
+                  label: 'Password',
+                  controller: auth.txtPassword,
                   obscure: true,
                 ),
 
-                CustomButton(text: "Login", onPressed: _login),
+                const SizedBox(height: 12),
+                CustomButton(text: 'Login', onPressed: _login),
 
                 const SizedBox(height: 20),
-                Text(controller.statusLogin),
+                Obx(() => Text(auth.statusLogin.value)),
               ],
             ),
           ),

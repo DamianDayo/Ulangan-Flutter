@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class LoginController {
+class LoginController extends GetxController {
   final TextEditingController txtUsername = TextEditingController();
   final TextEditingController txtPassword = TextEditingController();
 
-  String statusLogin = "Status Login";
+  var statusLogin = 'Status Login'.obs;
 
-  void login(VoidCallback onSuccess, VoidCallback onFailure) {
-    if (txtUsername.text == "Asep" && txtPassword.text == "Asep123") {
-      statusLogin = "Login Berhasil";
-      onSuccess();
+  bool login() {
+    if (txtUsername.text == '' && txtPassword.text == '') {
+      statusLogin.value = 'Login Berhasil';
+      return true;
     } else {
-      statusLogin = "Login Gagal";
-      onFailure();
+      statusLogin.value = 'Login Gagal';
+      return false;
     }
+  }
+
+  @override
+  void onClose() {
+    txtUsername.dispose();
+    txtPassword.dispose();
+    super.onClose();
   }
 }
