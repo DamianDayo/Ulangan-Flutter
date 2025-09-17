@@ -17,3 +17,4 @@ class TitleText extends StatelessWidget {
     );
   }
 }
+// katanya size, color itu jadiin variable, biar bisa misal di page login size nya 24 warna biru, di histori bisa size 20 warna merah
