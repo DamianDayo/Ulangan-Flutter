@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ulangan_flutter/controllers/home_controller.dart';
+import 'package:ulangan_flutter/components/title_text.dart';
 import 'package:ulangan_flutter/routes/routes.dart';
 
 class HomePage extends StatelessWidget {
@@ -30,7 +31,11 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("ToDo App"),
+        title: const TitleText(
+          text: "Home Page",
+          fontSize: 30,       
+          color: Colors.lightBlue, 
+        ),
       ),
       body: Obx(() {
         final active = c.activeTodos;
