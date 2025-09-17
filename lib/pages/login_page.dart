@@ -20,7 +20,7 @@ class LoginPage extends StatelessWidget {
       } else {
         Get.snackbar(
           'Gagal',
-          'Username atau password salah',
+          'Username atau password salah!',
           snackPosition: SnackPosition.BOTTOM,
         );
       }
@@ -37,7 +37,7 @@ class LoginPage extends StatelessWidget {
               children: [
                 const TitleText(text: 'Selamat Datang'),
                 const SizedBox(height: 10),
-                const Text('Silakan masukkan username dan password anda'),
+                const Text('Silakan masukkan username dan password Anda!'),
 
                 CustomInputField(
                   label: 'Username',
@@ -48,12 +48,11 @@ class LoginPage extends StatelessWidget {
                   controller: auth.txtPassword,
                   obscure: true,
                 ),
+                //password disuruh ada opsi buat ngeliatin pw nya
 
                 const SizedBox(height: 12),
                 CustomButton(text: 'Login', onPressed: _login),
 
-                const SizedBox(height: 20),
-                Obx(() => Text(auth.statusLogin.value)),
               ],
             ),
           ),
