@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ulangan_flutter/components/title_text.dart';
 import 'package:ulangan_flutter/controllers/history_controller.dart';
 
 class HistoryPage extends StatelessWidget {
@@ -10,7 +11,11 @@ class HistoryPage extends StatelessWidget {
     final HistoryController c = Get.put(HistoryController());
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Histori")),
+      appBar: AppBar(title: const TitleText(
+          text: "History",
+          fontSize: 30,       
+          color: Colors.brown, 
+        ),),
       body: Obx(() {
         final completed = c.completed;
         if (completed.isEmpty) {

@@ -27,7 +27,7 @@ class LoginPage extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Halaman Login')),
+      appBar: AppBar(title: const Text('')),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -35,7 +35,7 @@ class LoginPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const TitleText(text: 'Selamat Datang'),
+                const TitleText(text: 'ToDo App'),
                 const SizedBox(height: 10),
                 const Text('Silakan masukkan username dan password Anda!'),
 
@@ -48,8 +48,6 @@ class LoginPage extends StatelessWidget {
                   controller: auth.txtPassword,
                   obscure: true,
                 ),
-                //password disuruh ada opsi buat ngeliatin pw nya
-
                 const SizedBox(height: 12),
                 CustomButton(text: 'Login', onPressed: _login),
 

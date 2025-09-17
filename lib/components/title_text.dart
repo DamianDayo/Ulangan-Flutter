@@ -2,19 +2,25 @@ import 'package:flutter/material.dart';
 
 class TitleText extends StatelessWidget {
   final String text;
+  final double fontSize;
+  final Color color;
 
-  const TitleText({super.key, required this.text});
+  const TitleText({
+    super.key,
+    required this.text,
+    this.fontSize = 24,   
+    this.color = Colors.blue,  
+  });
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: const TextStyle(
-        fontSize: 24,
+      style: TextStyle(
+        fontSize: fontSize,
         fontWeight: FontWeight.bold,
-        color: Colors.blue,
+        color: color,
       ),
     );
   }
 }
-// katanya size, color itu jadiin variable, biar bisa misal di page login size nya 24 warna biru, di histori bisa size 20 warna merah
