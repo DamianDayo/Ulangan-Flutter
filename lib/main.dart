@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ulangan_flutter/routes/pages.dart';
+import 'package:ulangan_flutter/routes/routes.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
-  runApp(const MainApp());
+void main() async {
+  await GetStorage.init();
+  runApp(const MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Ulangan Flutter',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
+      initialRoute: AppRoutes.loginPage,
+      getPages: AppPages.pages,
     );
   }
 }
