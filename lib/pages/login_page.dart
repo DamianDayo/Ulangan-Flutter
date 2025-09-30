@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ulangan_flutter/components/custom_button.dart';
 import 'package:ulangan_flutter/components/custom_textfield.dart';
 import 'package:ulangan_flutter/components/title_text.dart';
 import 'package:ulangan_flutter/controllers/login_controller.dart';
-import 'package:ulangan_flutter/pages/main_menu_page.dart';
+import 'package:ulangan_flutter/controllers/splashscreen_controller.dart';
+import 'package:ulangan_flutter/pages/splashscreen_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -13,10 +15,18 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final LoginController auth = Get.find();
 
-    void _login() {
+      Future<void> _login() async {
       final ok = auth.login();
       if (ok) {
-        Get.offAll(() => MainMenuPage());
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString("username", auth.txtUsername.text.trim());
+
+        Get.offAll(
+          () => SplashscreenPage(),
+          binding: BindingsBuilder(() {
+            Get.put(SplashscreenController(fromLogin: true));
+          }),
+        );
       } else {
         Get.snackbar(
           'Gagal',
@@ -50,7 +60,6 @@ class LoginPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 CustomButton(text: 'Login', onPressed: _login),
-
               ],
             ),
           ),
