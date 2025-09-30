@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
-
 import 'package:ulangan_flutter/pages/login_page.dart';
 import 'package:ulangan_flutter/pages/main_menu_page.dart';
 import 'package:ulangan_flutter/pages/home_page.dart';
 import 'package:ulangan_flutter/pages/history_page.dart';
 import 'package:ulangan_flutter/pages/add_todo_page.dart';
 import 'package:ulangan_flutter/pages/edit_todo_page.dart';
+import 'package:ulangan_flutter/pages/splashscreen_page.dart';
 
 import 'package:ulangan_flutter/bindings/login_binding.dart';
 import 'package:ulangan_flutter/bindings/main_menu_binding.dart';
@@ -13,7 +13,7 @@ import 'package:ulangan_flutter/bindings/home_binding.dart';
 import 'package:ulangan_flutter/bindings/history_binding.dart';
 import 'package:ulangan_flutter/bindings/add_todo_binding.dart';
 import 'package:ulangan_flutter/bindings/edit_todo_binding.dart';
-
+import 'package:ulangan_flutter/bindings/splash_binding.dart';
 import 'routes.dart';
 
 class AppPages {
@@ -23,6 +23,7 @@ class AppPages {
     GetPage(name: AppRoutes.homePage, page: () => HomePage(), binding: HomeBinding()),
     GetPage(name: AppRoutes.historyPage, page: () => HistoryPage(), binding: HistoryBinding()),
     GetPage(name: AppRoutes.addTodoPage, page: () => AddTodoPage(), binding: AddTodoBinding()),
+    GetPage(name: AppRoutes.splashscreenPage, page: () => SplashscreenPage(), binding: SplashBinding()),
     GetPage(name: AppRoutes.editTodoPage, page: () => EditTodoPage(), binding: EditTodoBinding(),
 ),
 
