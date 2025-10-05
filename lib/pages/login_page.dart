@@ -15,12 +15,12 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final LoginController auth = Get.find();
 
-      Future<void> _login() async {
+    Future<void> _login() async {
       final ok = auth.login();
       if (ok) {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString("username", auth.txtUsername.text.trim());
-
+        await prefs.setBool("isLoggedIn", true);
         Get.offAll(
           () => SplashscreenPage(),
           binding: BindingsBuilder(() {
