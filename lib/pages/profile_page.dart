@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ulangan_flutter/components/title_text.dart';
+import 'package:ulangan_flutter/database_helper.dart';
 import 'package:ulangan_flutter/routes/routes.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -64,10 +65,9 @@ class ProfilePage extends StatelessWidget {
                     textConfirm: "Yes",
                     confirmTextColor: Colors.white,
                     onConfirm: () async {
-                      final prefs = await SharedPreferences.getInstance();
-                      await prefs.setBool("isLoggedIn", false);
-                      await prefs.remove("username");
-
+                      final dbHelper = DatabaseHelper.instance;
+                      await dbHelper.logout();
+                      Get.offAllNamed(AppRoutes.loginPage);
                       Get.offAllNamed(AppRoutes.loginPage);
                     },
                   );

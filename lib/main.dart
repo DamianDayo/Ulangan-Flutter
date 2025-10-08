@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ulangan_flutter/database_helper.dart';
 import 'package:ulangan_flutter/routes/pages.dart';
 import 'package:ulangan_flutter/routes/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final prefs = await SharedPreferences.getInstance();
-  final isLoggedIn = prefs.getBool("isLoggedIn") ?? false;
+  final dbHelper = DatabaseHelper.instance;
+  final user = await dbHelper.getUser();
+  final isLoggedIn = user != null && user['isLoggedIn'] == 1;
 
   runApp(MyApp(isLoggedIn: isLoggedIn));
 }
