@@ -6,7 +6,7 @@ class MainMenuPage extends StatelessWidget {
   MainMenuPage({super.key});
 
   final MainMenuController c = Get.put(MainMenuController());
-
+  
   @override
   Widget build(BuildContext context) {
     return Obx(
