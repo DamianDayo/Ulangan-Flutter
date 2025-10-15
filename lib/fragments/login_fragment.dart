@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ulangan_flutter/pages/login_page.dart';
+import 'package:ulangan_flutter/pages/login/login_page.dart';
 
 class LoginFragment extends StatelessWidget {
   const LoginFragment({super.key});

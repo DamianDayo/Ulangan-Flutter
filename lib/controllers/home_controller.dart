@@ -1,12 +1,18 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:ulangan_flutter/database_helper.dart';
 import 'package:ulangan_flutter/models/todo.dart';
 
 class HomeController extends GetxController {
-  final GetStorage storage = GetStorage();
   final todos = <Todo>[].obs;
-
   final categories = ['Mendesak', 'Penting', 'Tidak Penting'];
+
+  var isMobile = true.obs;
+  void updateLayout(BoxConstraints constraints) {
+    isMobile.value = constraints.maxWidth < 600;
+  }
+
+  final dbHelper = DatabaseHelper.instance;
 
   @override
   void onInit() {
@@ -14,61 +20,71 @@ class HomeController extends GetxController {
     loadTodos();
   }
 
-  List<Todo> get activeTodos => todos.where((t) => !t.isDone).toList();
+  Future<void> loadTodos() async {
+    try {
+      final data = await dbHelper.getTodos();
+      todos.assignAll(data.map((e) => Todo.fromJson(e)).toList());
+    } catch (e) {
+      debugPrint('Error loading todos: $e');
+    }
+  }
 
+  List<Todo> get activeTodos => todos.where((t) => !t.isDone).toList();
   List<Todo> get completedTodos => todos.where((t) => t.isDone).toList();
 
-  void addTodo(String title, String desc, int category, String deadline) {
+  Future<void> addTodo(String title, String desc, int category, String deadline) async {
     if (title.trim().isEmpty) return;
-    todos.add(Todo(
+
+    final todo = Todo(
       title: title.trim(),
       desc: desc.trim(),
       selectedCategory: category,
-      deadline: deadline,
-    ));
-    saveTodos();
+      deadline: deadline.trim(),
+      isDone: false,
+    );
+
+    await dbHelper.insertTodo(todo.toJson());
+    await loadTodos();
+    Get.snackbar('Sukses', 'ToDo berhasil ditambahkan', snackPosition: SnackPosition.TOP);
   }
 
-  void updateTodo(int index, String title, String desc, int category, String deadline) {
-    if (index < 0 || index >= todos.length) return;
-    todos[index].title = title.trim();
-    todos[index].desc = desc.trim();
-    todos[index].selectedCategory = category;
-    todos[index].deadline = deadline;
-    todos.refresh();
-    saveTodos();
+  Future<void> updateTodoInDB(
+    int id,
+    String title,
+    String desc,
+    int category,
+    String deadline,
+    bool isDone,
+  ) async {
+    final todo = Todo(
+      id: id,
+      title: title.trim(),
+      desc: desc.trim(),
+      selectedCategory: category,
+      deadline: deadline.trim(),
+      isDone: isDone,
+    );
+
+    await dbHelper.updateTodo(id, todo.toJson());
+    await loadTodos();
+    Get.snackbar('Berhasil', 'Data berhasil diperbarui', snackPosition: SnackPosition.TOP);
   }
 
-  void deleteTodo(int index) {
-    if (index < 0 || index >= todos.length) return;
-    todos.removeAt(index);
-    saveTodos();
-  }
-
-  void toggleTodoStatus(int index) {
-    if (index < 0 || index >= todos.length) return;
-    todos[index].isDone = !todos[index].isDone;
-    todos.refresh();
-    saveTodos();
-  }
-
-  Future<void> saveTodos() async {
-    final list = todos.map((t) => t.toJson()).toList();
-    await storage.write('todos', list);
-  }
-
-  void loadTodos() {
-    final raw = storage.read('todos');
-    if (raw == null) return;
-
+  Future<void> toggleTodoStatus(int id, bool newStatus) async {
     try {
-      final loaded = (raw as List)
-          .map<Todo>((item) => Todo.fromJson(Map<String, dynamic>.from(item)))
-          .toList();
-      todos.value = loaded;
+      final idx = todos.indexWhere((t) => t.id == id);
+      if (idx == -1) return;
+
+      final updated = todos[idx].copyWith(isDone: newStatus);
+      await dbHelper.updateTodo(id, updated.toJson());
+      await loadTodos();
     } catch (e) {
-      todos.clear();
-      print('Error loading todos: $e');
+      debugPrint('Error toggling todo: $e');
     }
+  }
+
+  Future<void> deleteTodoFromDB(int id) async {
+    await dbHelper.deleteTodo(id);
+    await loadTodos();
   }
 }

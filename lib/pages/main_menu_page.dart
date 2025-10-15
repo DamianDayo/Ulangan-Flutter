@@ -5,13 +5,18 @@ import 'package:ulangan_flutter/controllers/main_menu_controller.dart';
 class MainMenuPage extends StatelessWidget {
   MainMenuPage({super.key});
 
-  final MainMenuController c = Get.put(MainMenuController());
-  
+  final MainMenuController c = Get.find<MainMenuController>();
+
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
-        body: c.pages[c.selectedIndex.value],
+        body: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 600),
+            child: c.pages[c.selectedIndex.value],
+          ),
+        ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: c.selectedIndex.value,
           onTap: c.changePage,

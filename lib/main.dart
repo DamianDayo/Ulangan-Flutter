@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ulangan_flutter/database_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ulangan_flutter/routes/pages.dart';
 import 'package:ulangan_flutter/routes/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final dbHelper = DatabaseHelper.instance;
-  final user = await dbHelper.getUser();
-  final isLoggedIn = user != null && user['isLoggedIn'] == 1;
+  final prefs = await SharedPreferences.getInstance();
+  final username = prefs.getString("username");
+  final isLoggedIn = username != null;
 
   runApp(MyApp(isLoggedIn: isLoggedIn));
 }
@@ -21,12 +21,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      title: 'Ulangan Flutter',
       debugShowCheckedModeBanner: false,
-      title: "Ulangan Flutter",
-      initialRoute: isLoggedIn
-          ? AppRoutes
-                .splashscreenPage 
-          : AppRoutes.loginPage,
+      initialRoute:
+          isLoggedIn ? AppRoutes.splashscreenPage : AppRoutes.loginPage,
       getPages: AppPages.pages,
     );
   }

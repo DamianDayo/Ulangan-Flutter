@@ -10,6 +10,11 @@ class EditTodoController extends GetxController {
   final descController = TextEditingController();
   final deadlineController = TextEditingController();
   final selectedCategory = 0.obs;
+  
+  var isMobile = true.obs;
+  void updateLayout(BoxConstraints constraints) {
+    isMobile.value = constraints.maxWidth < 600;
+  }
 
   @override
   void onInit() {
@@ -47,13 +52,15 @@ class EditTodoController extends GetxController {
     final dl = deadlineController.text.trim();
 
     if (title.isEmpty || desc.isEmpty || dl.isEmpty) {
-      Get.snackbar('Error', 'Semua field harus diisi!', snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Error', 'Semua field harus diisi!', snackPosition: SnackPosition.TOP);
       return;
     }
 
-    home.updateTodo(index, title, desc, cat, dl);
+    final todo = home.todos[index];
+    home.updateTodoInDB(todo.id!, title, desc, cat, dl, todo.isDone);
+
     Get.back();
-    Get.snackbar('Sukses', 'ToDo berhasil disimpan', snackPosition: SnackPosition.BOTTOM);
+    Get.snackbar('Sukses', 'ToDo berhasil disimpan', snackPosition: SnackPosition.TOP);
   }
 
   @override

@@ -3,9 +3,10 @@ import 'package:get/get.dart';
 import 'package:ulangan_flutter/controllers/home_controller.dart';
 import 'package:ulangan_flutter/components/title_text.dart';
 import 'package:ulangan_flutter/routes/routes.dart';
+import 'package:ulangan_flutter/models/todo.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomeMobilePage extends StatelessWidget {
+  const HomeMobilePage({super.key});
 
   String formatDeadline(String rawDeadline) {
     try {
@@ -27,14 +28,15 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HomeController c = Get.put(HomeController());
+    final HomeController c = Get.find<HomeController>();
 
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 210, 200, 200),
       appBar: AppBar(
         title: const TitleText(
           text: "Home Page",
-          fontSize: 30,       
-          color: Colors.lightBlue, 
+          fontSize: 30,
+          color: Colors.lightBlue,
         ),
       ),
       body: Obx(() {
@@ -46,15 +48,14 @@ class HomePage extends StatelessWidget {
         return ListView.builder(
           itemCount: active.length,
           itemBuilder: (context, i) {
-            final todo = active[i];
-            final indexInAll = c.todos.indexOf(todo);
+            final Todo todo = active[i];
 
             return Card(
               margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               child: ListTile(
                 leading: Checkbox(
                   value: todo.isDone,
-                  onChanged: (_) => c.toggleTodoStatus(indexInAll),
+                  onChanged: (value) => c.toggleTodoStatus(todo.id!, value ?? false),
                 ),
                 title: Text(todo.title, style: const TextStyle(fontWeight: FontWeight.bold)),
                 subtitle: Column(
@@ -70,7 +71,7 @@ class HomePage extends StatelessWidget {
                 trailing: IconButton(
                   icon: const Icon(Icons.edit),
                   onPressed: () {
-                    Get.toNamed(AppRoutes.editTodoPage, arguments: indexInAll);
+                    Get.toNamed(AppRoutes.editTodoPage, arguments: todo.id);
                   },
                 ),
               ),

@@ -3,12 +3,17 @@ import 'package:get/get.dart';
 import 'package:ulangan_flutter/controllers/home_controller.dart';
 
 class AddTodoController extends GetxController {
+  final HomeController home = Get.find();
+  
   final titleController = TextEditingController();
   final descController = TextEditingController();
   final deadlineController = TextEditingController();
   final selectedCategory = 0.obs;
 
-  final HomeController home = Get.find();
+  var isMobile = true.obs;
+  void updateLayout(BoxConstraints constraints) {
+    isMobile.value = constraints.maxWidth < 600;
+  }
 
   void addTodo() {
     final title = titleController.text.trim();
@@ -20,7 +25,7 @@ class AddTodoController extends GetxController {
       Get.snackbar(
         'Error',
         'Semua field harus diisi',
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
       );
       return;
     }
@@ -30,7 +35,7 @@ class AddTodoController extends GetxController {
     Get.snackbar(
       'Sukses',
       'ToDo berhasil ditambahkan',
-      snackPosition: SnackPosition.BOTTOM,
+      snackPosition: SnackPosition.TOP,
     );
   }
 

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ulangan_flutter/components/title_text.dart';
 import 'package:ulangan_flutter/controllers/add_todo_controller.dart';
 import 'package:ulangan_flutter/controllers/home_controller.dart';
+import 'package:ulangan_flutter/components/custom_textfield.dart';
+import 'package:ulangan_flutter/components/custom_button.dart';
 
-class AddTodoPage extends StatelessWidget {
-  const AddTodoPage({super.key});
+class AddTodoMobilePage extends StatelessWidget {
+  const AddTodoMobilePage({super.key});
 
   String _monthName(int month) {
     const names = [
@@ -20,20 +23,21 @@ class AddTodoPage extends StatelessWidget {
     final HomeController homeController = Get.find();
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Tambah ToDo")),
+      backgroundColor: const Color.fromARGB(255, 210, 200, 200),
+      appBar: AppBar(
+        title: const TitleText(
+          text: "Tambah ToDo",
+          fontSize: 30,       
+          color: Colors.blue, 
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(
-              controller: c.titleController,
-              decoration: const InputDecoration(labelText: "Judul"),
-            ),
+            CustomInputField(label: "Judul", controller: c.titleController),
             const SizedBox(height: 12),
-            TextField(
-              controller: c.descController,
-              decoration: const InputDecoration(labelText: "Deskripsi"),
-            ),
+            CustomInputField(label: "Deskripsi", controller: c.descController),
             const SizedBox(height: 12),
             GestureDetector(
               onTap: () async {
@@ -50,9 +54,9 @@ class AddTodoPage extends StatelessWidget {
                 }
               },
               child: AbsorbPointer(
-                child: TextField(
+                child: CustomInputField(
+                  label: "Tenggat",
                   controller: c.deadlineController,
-                  decoration: const InputDecoration(labelText: "Tenggat"),
                 ),
               ),
             ),
@@ -69,9 +73,11 @@ class AddTodoPage extends StatelessWidget {
                   onChanged: (val) => c.selectedCategory.value = val ?? 0,
                 )),
             const SizedBox(height: 20),
-            ElevatedButton(
+            CustomButton(
+              text: "Tambah",
               onPressed: c.addTodo,
-              child: const Text("Tambah"),
+              backgroundColor: Colors.blue,
+              textColor: Colors.white,
             ),
           ],
         ),
